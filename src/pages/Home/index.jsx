@@ -1,21 +1,14 @@
 /* eslint-disable no-console */
 /* eslint-disable @iceworks/best-practices/no-http-url */
-import { createElement, useState, useRef } from 'rax';
+import { createElement, useState } from 'rax';
 import View from 'rax-view';
 import Text from 'rax-text';
 import TextInput from 'rax-textinput';
 import styles from './index.module.css';
-import Image from 'rax-image';
-import Logo from '@/components/Logo';
 import Link from 'rax-link';
-// import Picture from 'rax-picture';
-// import { Button, Icon } from '@alifd/next';
-// import { Button, Radio } from 'antd';
-import Video from 'rax-video';
 import File from 'universal-file';
 import chooseImage from 'universal-choose-image';
 import request from 'universal-request';
-// import { saveAs } from 'file-saver';
 
 const options = {
   count: 1,
@@ -25,25 +18,9 @@ const options = {
 
 
 const upLoadFile = (url) => {
-  // blobUri = 'blob:https://imgss.github.io/db7ea2b6-12a5-4e6e-8983-3e69c3fd64f7';
-  console.log(url);
+  console.log('upload url', url);
   chooseImage(options).then((fp) => {
     console.log('local file obj', fp);
-    // request({
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data',
-    //     boundary: '----WebKitFormBoundaryKPjN0GYtWEjAni5F',
-    //   },
-    //   url: 'http://101.201.127.11:7001/api/upload',
-    //   method: 'POST',
-    //   data: {
-    //     from: 'Rax',
-    //     file: fp,
-    //   },
-    //   dataType: 'json',
-    // }).then((response) => { console.log(response); })
-    //   .catch((error) => {});
-
     let fileName; let
       filePath;
     if ('files' in fp) {
@@ -72,12 +49,9 @@ const upLoadFile = (url) => {
 };
 
 export default function Home() {
-  const imageRef = useRef(null);
   const [blobUri, setBlobUri] = useState('http://rax.aruoxi.com/api/upload');
   const [text, setText] = useState('【 Upload 】');
   const [flag, setFlag] = useState(0);
-
-  // const objectURL = URL.createObjectURL('blob:https://imgss.github.io/db7ea2b6-12a5-4e6e-8983-3e69c3fd64f7');
 
   const changeUri = () => {
     if (text !== '【 Upload 】') {
@@ -117,14 +91,11 @@ export default function Home() {
 
   return (
     <View className={styles.homeContainer}>
-
-
-      {/* <Text type="primary" size="large" onClick={upLoadFile({ blobUri })}>{ text }</Text> */}
+      {/* 显示当前文件上传模式： 1.upload，直接上传至服务器； 2.上传至服务器后， 服务器默认将其转换为gif文件 */}
       <Link
         href={'#'}
         miniappHref={'/pages/Home/index'}
-        onClick={(e) => {
-          console.log(e);
+        onClick={() => {
           console.log('blobUri', blobUri);
           upLoadFile(blobUri);
         }}
@@ -133,19 +104,23 @@ export default function Home() {
           { text }
         </Text>
       </Link>
+
       <Text type="primary" size="large" onClick={changeUri}>【Change 】</Text>
+
+      {/* 任务进度processFlag */}
       <Text >
         processFlag: { flag }
       </Text>
+      {/* Post方法调用接口http://rax.aruoxi.com/api/flag，主动设置processFlag */}
       <TextInput
         value={flag}
         placeholder={`set flag = ${flag}`}
         onBlur={(e) => setProcessFlag(e.target.value)}
       />
+      {/* Get方法调用接口http://rax.aruoxi.com/api/flag，获取processFlag */}
       <Text onClick={getProcessFlag}>
         【 get flag 】
       </Text>
-
 
       {/* <Text type="primary" size="large" onCLick={upLoadFile('http://rax.aruoxi.com/api/upload')}>【 UpLoad 】</Text> */}
       {/* 'http://127.0.0.1:7001/api/upload'  'https://rax.aruoxi.com/api/upload' */}
@@ -154,9 +129,6 @@ export default function Home() {
         title: <input name="title" type="text" value="233" />
         <button type="submit">Upload</button>
       </form> */}
-
-
     </View>
-
   );
 }
