@@ -91,7 +91,7 @@ export default function Home() {
 
   return (
     <View className={styles.homeContainer}>
-      {/* 显示当前文件上传模式： 1.upload，直接上传至服务器； 2.上传至服务器后， 服务器默认将其转换为gif文件 */}
+      {/* 显示当前文件上传模式： 1.upload: 直接上传至服务器； 2.doBlob: 上传至服务器后， 服务器默认将其转换为gif文件 */}
       <Link
         href={'#'}
         miniappHref={'/pages/Home/index'}
@@ -105,6 +105,7 @@ export default function Home() {
         </Text>
       </Link>
 
+      {/* 改变上传文件模式 upload/doBlob  */}
       <Text type="primary" size="large" onClick={changeUri}>【Change 】</Text>
 
       {/* 任务进度processFlag */}
